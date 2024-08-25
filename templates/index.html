@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 50px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: rgb(255, 255, 255);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 300px auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.9); /* Solid white */
+            padding: 50px;
+            border-radius: 20px;
+        }
+
+        h1 {
+            color: #000;
+            font-family: 'Times New Roman', Times, serif;
+            margin-top: 200;
+            margin-bottom: 20px;
+            font-size: 60px;
+        }
+
+        form {
+            text-align: center;
+        }
+
+        label {
+            margin-bottom: 10px;
+            display: block;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            padding: 10px;
+            margin-left: 220px;
+            width: 100%;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% {
+                transform: translateX(0);
+            }
+            25%, 75% {
+                transform: translateX(-5px);
+            }
+            50% {
+                transform: translateX(5px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <video id="bg-video" autoplay muted loop style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%;">
+        <!-- <source src="/videos/plant2.mp4" type="video/mp4"> -->
+        <source src="/videos/plant1.mp4" type="video/mp4">
+        <!-- <source src="/videos/plant3.mp4" type="video/mp4"> -->
+        Your browser does not support the video tag.
+    </video>
+    
+
+    <div class="content">
+        <h1>Plant Disease Detection</h1>
+
+        <form action="/result" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <label for="image">Choose an image:</label>
+            <input type="file" id = "image" name="image" accept="image/*" required>
+            <br>
+            <button type="submit" id="detectButton">Detect Disease</button>
+        </form>
+    </div>
+
+    <script>
+        var video = document.getElementById("bg-video");
+        var currentVideoIndex = 0;
+        var videos = ["plant2.mp4", "plant3.mp4", "plant1.mp4"];
+        
+        video.addEventListener("timeupdate", function() {
+    if (this.currentTime >= 80) {
+        currentVideoIndex = (currentVideoIndex + 1) % videos.length;
+        this.src = videos[currentVideoIndex];
+        this.currentTime = 0; // Reset video time
+    }
+});
+
+        function validateForm() {
+            var fileInput = document.querySelector('input[type="file"]');
+            var allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+
+            if (!fileInput.files.length) {
+                alert('Please choose an image before detecting disease.');
+                return false;
+            }
+
+            // Check if the file extension is allowed
+            if (!allowedExtensions.exec(fileInput.value)) {
+                alert('Invalid file type. Please select a valid image file (JPEG or PNG).');
+                fileInput.value = ''; // Clear the file input
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
+</body>
+</html>
