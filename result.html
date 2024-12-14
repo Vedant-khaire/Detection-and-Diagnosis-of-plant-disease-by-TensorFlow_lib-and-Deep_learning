@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Detection Result</title>
+    <style>
+         body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("{{ url_for('static', filename='leaf.jpg') }}");
+            background-size: cover;
+            background-position: center;
+        }
+
+        #header {
+            text-align: center;
+            padding: 20px;
+            color: white;
+            background: linear-gradient(to right, #4CAF50, #45a049);
+        }
+
+        #content {
+            margin: 20px auto;
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            max-width: 600px;
+        }
+
+
+        #detection-result {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #e0f7fa;
+            border-radius: 8px;
+        }
+
+        #solution {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #b2dfdb;
+            border-radius: 8px;
+        }
+
+        #plant-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        li {
+            text-align: left;
+            padding-left: 1em;
+            position: relative;
+        }
+
+        li::before {
+            content: '\2022'; /* Bullet point character */
+            position: absolute;
+            left: 0;
+        }
+
+        #know-more {
+            margin-top: 20px;
+            background-color: #ffcc80;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #know-more:hover {
+            background-color: #ffb74d;
+        }
+    </style>
+</head>
+<body>
+<div id="header">
+    <h1>Plant Disease Detection Result</h1>
+</div>
+
+<div id="content">
+    <div id="detection-result">
+        <h2>Disease Detected:</h2>
+        <p>{{ predicted_disease }}</p>
+    </div>
+
+    <div id="solution">
+        <h2>Solution:</h2>
+        <ul>
+            {% for point in solution %}
+                <li>{{ point }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <img id="plant-image" src="{{ image_path }}" alt="Plant Image">
+
+    <div id="know-more">
+        <a href="{% if predicted_disease == 'Bacterial_Infections' %}https://ohioline.osu.edu/factsheet/plpath-gen-6{% elif predicted_disease == 'Gall_Disease' %}https://extension.umn.edu/plant-diseases/crown-gall{% elif predicted_disease == 'Healthy' %}https://www.fnp.com/article/how-to-keep-your-plants-healthy-and-disease-free{% elif predicted_disease == 'Peach_Leaf_Curl' %}https://agriculture.vic.gov.au/biosecurity/plant-diseases/fruit-and-nut-diseases/stone-fruits/peach-leaf-curl#:~:text=Peach%20leaf%20curl%20is%20mainly,it%20can%20seriously%20weaken%20trees.{% elif predicted_disease == 'Powdery' %}https://portal.ct.gov/CAES/Fact-Sheets/Plant-Pathology/Powdery-Mildew{% elif predicted_disease == 'Rust' %}https://en.wikipedia.org/wiki/Rust_(fungus){% elif predicted_disease == 'Wilting' %}https://en.wikipedia.org/wiki/Wilt_disease{% else %}#{% endif %}" target="_blank" rel="noopener noreferrer">Know More</a>
+    </div>
+</div>
+
+<!-- Add this section to display error message -->
+{% if error_message %}
+    <div id="error-message">
+        <h2>Error:</h2>
+        <p>{{ error_message }}</p>
+    </div>
+{% endif %}
+
+</body>
+</html>
